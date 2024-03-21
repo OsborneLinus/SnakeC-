@@ -2,18 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Security.Cryptography.X509Certificates;
+
 namespace SnakeGame;
 
 class Snake
 {
     ConsoleKeyInfo KeyInfo = new ConsoleKeyInfo();
-    char key = 'w';
     char dir = 'u';
 
     public List<Position> snakeBody {get; set;}
     public int x {get; set;}
     public int y {get; set;}
     public int score {get; set;}
+
+    public int sleepTime = 100;
 
     public Snake()
     {
@@ -30,7 +32,7 @@ class Snake
         foreach(Position pos in snakeBody)
         {
         Console.SetCursorPosition(pos.x, pos.y);
-        Console.Write("▊");
+        Console.Write("■");
 
         }
     }
@@ -83,7 +85,7 @@ class Snake
         {
         snakeBody.Add(new Position(x, y));
         snakeBody.RemoveAt(0);
-        Thread.Sleep(100);
+        Thread.Sleep(sleepTime);
 
         }
     }
@@ -95,6 +97,10 @@ class Snake
             snakeBody.Add(new Position(x, y));
             f.foodNewLocation();
             score++;
+            if(sleepTime > 10)
+            {
+                sleepTime -= 2;
+            }
         }
     }
     public void isDead()
